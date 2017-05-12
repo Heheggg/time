@@ -4,6 +4,8 @@ from matrix import *
 from draw import *
 
 symbol_table = {}
+frame = 60
+basename = ''
 
 """======== first_pass( commands, symbols ) ==========
 
@@ -23,10 +25,24 @@ symbol_table = {}
   jdyrlandweaver
   ==================== """
 def first_pass( commands ):
+    global frame
+    global basename
     frame_set = False
     for command in commands:
-        
-
+        c = command[0]
+        if c == 'frames':
+            frame = command[1]
+        elif c == 'basename'
+            basename = command[1]
+        elif c == 'vary':
+            if not frame_set:
+                print "frames not found, exiting"
+                return
+            if basename == '':
+                basename = "animate"
+                print "basename not set, defauling to 'animate'"
+            
+                
 
 """======== second_pass( commands ) ==========
 
