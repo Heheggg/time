@@ -65,7 +65,44 @@ def second_pass( commands, num_frames ):
     global frames_set
     if not frames_set:
         print "Frames not set: something went wrong in first_pass"
-                            
+        return
+    knobs = [{} for x in range(num_frames)]
+    for command in commands:
+        args = command[1:]
+
+        if command[0] == 'vary':
+
+            name = args[0]
+            start_frame  = int(args[1])
+            end_frame = int(args[2])
+            start_val = float(args[3])
+            end_val = float(args[4])
+
+            diff_frame = end_frame - start_frame
+
+            if diff_frame < 0 or start_frame < 0 or end_frame >= frames:
+                print 'Error with frame range'
+                return
+
+            diff_val = end_val - start_val
+            change_diff = diff_val / diff_frame
+            inc = start_val
+            m = 1
+            
+            if change_diff < 0:
+                temp = start_frame
+                start_frame = end_frame
+                end_frame = temp
+                change_diff *= -1.0
+                m *= -1 
+                inc = end_val
+                end_val = start_val
+                
+            for i in range(start_frame,end_frame+m,m):
+                knobs[i][name] = inc
+                
+                if inc < end_val:
+                    inc += change_diff 
     return knobs
                 
 def run(filename):
